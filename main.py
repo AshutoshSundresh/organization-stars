@@ -6,20 +6,24 @@ import requests
 app = Flask(__name__)
 
 def get_total_stars(org_name):
-
-    # Create a GitHub instance
-    g = Github()
-
-    # Get the organization from the link
-    org = g.get_organization(org_name)
-
-    # Initialize the total number of stars to zero
+    api_url = f"https://api.github.com/orgs/{org_name}/repos?type=all&per_page=100&page={}"
+    headers = {"Accept": "application/vnd.github.v3+json"}
+    
     total_stars = 0
+    page = 1
+    
+    while True:
+        response = requests.get(api_url.format(page), headers=headers)
+        
+        if response.status_code == 200:
+            repos = response.json()
+            if len(repos) == 0:
+                break
+            total_stars += sum(repo["stargazers_count"] for repo in repos)
+            page += 1
+        else:
+            raise ValueError(f"Failed to get repositories for {org_name}: {response.text}")
 
-    # Loop through all repositories in the organization
-    for repo in org.get_repos():
-        # Add the number of stars for the repository to the total number of stars
-        total_stars += repo.stargazers_count
     return total_stars
         
 @app.route("/")
