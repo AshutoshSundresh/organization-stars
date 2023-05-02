@@ -52,9 +52,9 @@ def generate_svg():
     dwg.add(rect)
 
     # Draw the "Star(s)" label
-    star_label_bg = dwg.rect((15, 15), (110, 80), rx=10, ry=10, stroke='none')
+    star_label_bg = dwg.rect((15, 15), (110, 80), rx=10, ry=10, fill-opacity="0.4", stroke='none')
     dwg.add(star_label_bg)
-    dwg.add(dwg.text("Star" + ("s" if total_stars != 1 else ""), insert=(10, 70), font_family="Helvetica", font_size="50px", fill='#282828'))
+    dwg.add(dwg.text("Star" + ("s" if total_stars != 1 else ""), insert=(10, 70), font_family="Helvetica", font_size="50px", fill='#FFFFFF'))
 
     # Draw the star count
     star_count_bg = dwg.rect((135, 15), (330, 80), rx=10, ry=10, fill='#282828', stroke='none')
