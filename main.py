@@ -43,7 +43,7 @@ def generate_svg():
     # Draw the pill-shaped background
     # Create a gradient that goes from dark gray to light gray
     gradient = dwg.linearGradient((0, 0), (0, 1))
-    gradient.add_stop_color(offset='0%', color='#ffce00', opacity='1').add_stop_color(offset='50%', color='#ffce00', opacity='1').add_stop_color(offset='50%', color='#282828', opacity='1').add_stop_color(offset='100%', color='#282828', opacity='1')
+    gradient.add_stop_color(offset='0%', color='#ffce00', opacity='1').add_stop_color(offset='50%', color='#ffce00', opacity='1').add_stop_color(offset='50%', color='#282828', opacity='1')
     dwg.defs.add(gradient)
 
     # Create the rectangle
