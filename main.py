@@ -25,11 +25,14 @@ def generate_svg():
     # Get the total number of stars for the given organization
     total_stars = get_total_stars(org_name)
 
+    # Determine whether to use plural or singular "star"
+    star_label = "stars" if total_stars != 1 else "star"
+
     # Create an SVG drawing with a small rectangular box and a star icon
-    dwg = svgwrite.Drawing(size=(100, 50))
-    dwg.add(dwg.rect((0, 0), (100, 50), rx=5, ry=5, fill='white', stroke='black'))
-    dwg.add(dwg.text(f"{total_stars} stars", insert=(10, 30), font_size="20px", fill='black'))
-    dwg.add(dwg.polyline([(70, 10), (80, 30), (70, 50), (60, 30)], fill='yellow', stroke='black'))
+    dwg = svgwrite.Drawing(size=(140, 50))
+    dwg.add(dwg.rect((0, 0), (140, 50), rx=5, ry=5, fill='#fff', stroke_width=1, stroke='#000'))
+    dwg.add(dwg.text(f"{total_stars} {star_label}", insert=(10, 30), font_size="20px", font_family="Roboto", fill='#000'))
+    dwg.add(dwg.polyline([(110, 20), (120, 30), (110, 40), (100, 30)], fill='#ffea00', stroke_width=1, stroke='#000'))
 
     # Save the SVG drawing to a string
     svg_str = dwg.tostring()
