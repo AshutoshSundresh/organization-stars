@@ -38,7 +38,7 @@ def generate_svg():
     star_label = "stars" if total_stars != 1 else "star"
 
     # Create the SVG drawing
-    dwg = svgwrite.Drawing(size=(240, 200))
+    dwg = svgwrite.Drawing(size=(480, 100))
 
     # Draw the pill-shaped background
     # Create a gradient that goes from dark gray to light gray
@@ -47,7 +47,7 @@ def generate_svg():
     dwg.defs.add(gradient)
 
     # Create the rectangle
-    rect = dwg.rect((0, 0), (240, 200), rx=10, ry=10)
+    rect = dwg.rect((0, 0), (480, 100), rx=10, ry=10)
     rect.fill(gradient.get_paint_server())
     dwg.add(rect)
 
