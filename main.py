@@ -52,7 +52,7 @@ def generate_svg():
     dwg.add(rect)
 
     # Draw the "Star(s)" label
-    star_label_bg = dwg.rect((15, 15), (110, 80), rx=10, ry=10, fill='#00FFFFFF', stroke='none')
+    star_label_bg = dwg.rect((15, 15), (110, 80), rx=10, ry=10, stroke='none')
     dwg.add(star_label_bg)
     dwg.add(dwg.text("Star" + ("s" if total_stars != 1 else ""), insert=(10, 70), font_family="Helvetica", font_size="50px", fill='#282828'))
 
