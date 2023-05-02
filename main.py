@@ -54,12 +54,12 @@ def generate_svg():
     # Draw the "Star(s)" label
     star_label_bg = dwg.rect((15, 15), (110, 80), rx=10, ry=10, opacity="0.0", stroke='none')
     dwg.add(star_label_bg)
-    dwg.add(dwg.text("Star" + ("s" if total_stars != 1 else ""), insert=(10, 70), font_family="Helvetica", font_size="50px", fill='#c06c84'))
+    dwg.add(dwg.text("Star" + ("s" if total_stars != 1 else ""), insert=(10, 70), font_family="Helvetica", font_size="50px", fill='#f67280'))
 
     # Draw the star count
-    star_count_bg = dwg.rect((135, 15), (330, 80), rx=10, ry=10, fill='#6c5b7b', stroke='none')
+    star_count_bg = dwg.rect((135, 15), (330, 80), rx=10, ry=10, fill='#355c7d', stroke='none')
     dwg.add(star_count_bg)
-    dwg.add(dwg.text(total_stars, insert=(190, 70), font_family="Helvetica", font_size="50px", fill='#355c7d'))
+    dwg.add(dwg.text(total_stars, insert=(190, 70), font_family="Helvetica", font_size="50px", fill='#f67280'))
 
     # Save the SVG drawing to a string
     svg_str = dwg.tostring()
