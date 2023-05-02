@@ -1,3 +1,4 @@
 Flask==2.0.2
 svgwrite==1.4.1
 requests==2.26.0
+PyGithub
