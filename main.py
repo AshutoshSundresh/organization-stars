@@ -57,7 +57,7 @@ def generate_svg():
     dwg.add(dwg.text("Star" + ("s" if total_stars != 1 else ""), insert=(10, 70), font_family="Helvetica", font_size="50px", fill='#f8b195'))
 
     # Draw the star count
-    star_count_bg = dwg.rect((135, 15), (330, 80), rx=10, ry=10, fill='#c06c84', stroke='none')
+    star_count_bg = dwg.rect((135, 15), (330, 80), rx=10, ry=10, fill='#6c5b7b', stroke='none')
     dwg.add(star_count_bg)
     dwg.add(dwg.text(total_stars, insert=(190, 70), font_family="Helvetica", font_size="50px", fill='#f8b195'))
 
