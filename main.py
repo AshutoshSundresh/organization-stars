@@ -32,33 +32,27 @@ def generate_svg():
         total_stars = get_total_stars(org_name)
     except ValueError as e:
         return svgwrite.Drawing(size=(0, 0)).tostring()
-
+        
     # Determine whether to use plural or singular "star"
     star_label = "stars" if total_stars != 1 else "star"
 
     # Create the SVG drawing
-    dwg = svgwrite.Drawing(size=(480, 100))
+    dwg = svgwrite.Drawing(size=(120, 20))
 
-    # Draw the pill-shaped background
-    # Create a gradient that goes from dark gray to light gray
-    gradient = dwg.linearGradient((0, 0), (0, 1))
-    gradient.add_stop_color(offset='0%', color='#6c5b7b', opacity='1').add_stop_color(offset='50%', color='#355c7d', opacity='1')
-    dwg.defs.add(gradient)
+    # Draw the badge background
+    dwg.add(dwg.rect((0, 0), (len(star_label) * 7 + 5, 20), rx=5, ry=5, fill='#4c1'))
 
-    # Create the rectangle
-    rect = dwg.rect((0, 0), (480, 100), rx=10, ry=10)
-    rect.fill(gradient.get_paint_server())
-    dwg.add(rect)
+    # Draw the "Star(s)" label background
+    dwg.add(dwg.rect((0, 0), (len(star_label) * 7 + 5, 20), rx=5, ry=5, fill='#999'))
 
     # Draw the "Star(s)" label
-    star_label_bg = dwg.rect((15, 15), (110, 80), rx=10, ry=10, opacity="0.0", stroke='none')
-    dwg.add(star_label_bg)
-    dwg.add(dwg.text("Star" + ("s" if total_stars != 1 else ""), insert=(10, 70), font_family="Helvetica", font_size="50px", fill='#f67280'))
+    dwg.add(dwg.text(star_label, insert=(6, 14), font_family="Helvetica", font_size="11px", font_weight="bold", fill="#fff", text_anchor="start"))
+
+    # Draw the star count background
+    dwg.add(dwg.rect((len(star_label) * 7 + 5, 0), (len(str(total_stars)) * 7 + 5, 20), rx=5, ry=5, fill='#4c1'))
 
     # Draw the star count
-    star_count_bg = dwg.rect((135, 15), (330, 80), rx=10, ry=10, fill='#6c5b7b', stroke='none')
-    dwg.add(star_count_bg)
-    dwg.add(dwg.text(total_stars, insert=(190, 70), font_family="Helvetica", font_size="50px", fill='#f67280'))
+    dwg.add(dwg.text(str(total_stars), insert=(44, 14), font_family="Helvetica", font_size="11px", font_weight="bold", fill="#fff", text_anchor="start"))
 
     # Save the SVG drawing to a string
     svg_str = dwg.tostring()
