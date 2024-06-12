@@ -19,5 +19,5 @@ If you wish to use this project as is, use this link to view the generated image
 >>> https://organization-stars.vercel.app/?org={organization_name}
 
    <br>
-    <img height="60em" src="https://organization-stars.vercel.app/?org=ShapeShiftOS" />
+    <img height="22.5em" src="https://organization-stars.vercel.app/?org=ShapeShiftOS" />
    </br>
