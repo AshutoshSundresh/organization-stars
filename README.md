@@ -17,11 +17,11 @@ This FastAPI-powered app generates a badge displaying the total star count acros
 
 Just use this URL format:
 
->>> https://your-deployed-app-url/?org=YOUR_GITHUB_ORG_NAME
+` https://your-deployed-app-url/?org=YOUR_GITHUB_ORG_NAME `
 
 For example, if your app is deployed at `https://organization-stars.vercel.app` and you want to show stars for the "ShapeShiftOS" organization, you'd use:
 
->>> https://organization-stars.vercel.app/?org=ShapeShiftOS
+` https://organization-stars.vercel.app/?org=ShapeShiftOS `
 
 Stick that in an image tag, and you've got yourself a shiny star count badge! Here's an example use case:
 
@@ -33,7 +33,7 @@ Stick that in an image tag, and you've got yourself a shiny star count badge! He
 
 If you're more into raw data, hit up the `/api/stars` endpoint:
 
->>> https://your-deployed-app-url/api/stars?org=YOUR_GITHUB_ORG_NAME
+` https://your-deployed-app-url/api/stars?org=YOUR_GITHUB_ORG_NAME`
 
 ## Deploy Your Own 
 Note: You can use this project as is with the organization-stars.vercel.app domain. Be warned that you may run into rate limits as I'm using the public GitHub API with no authentication.
