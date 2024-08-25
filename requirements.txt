@@ -1,5 +1,5 @@
 fastapi
 uvicorn
-aiohttp
-cachetools
+PyGithub
 pybadges
+cachetools
