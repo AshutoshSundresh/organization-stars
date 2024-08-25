@@ -1,23 +1,46 @@
-# GitHub Organization Stars SVG
-- This project is a simple Flask web application that generates an SVG image showing the total number of stars for a given GitHub organization. It uses the GitHub API to fetch the total number of stars for each repository in the organization, and then uses Google's pybadges library to generate an SVG displaying the total number of stars in a GitHub organization.
-- The SVG image is generated dynamically in response to HTTP requests made to the Flask web server. The user can specify the name of the GitHub organization for which they want to see the total number of stars by passing it as a query parameter in the URL.
-- This project can be useful for individuals or organizations who want to keep track of the popularity of their GitHub repositories or those of others, in web pages or documentation.
-## Dependencies
-- Flask
-- github
-- svgwrite
-- requests
-- pybadges
-## Setup
-- Install dependencies by running pip install -r requirements.txt.
-## Usage
-- Run the application by running python app.py or deploy it on Vercel.
-- Access the application at http://localhost:5000/ with a query parameter org specifying the name of the organization whose stars you want to see, e.g. http://localhost:5000/?org=ShapeShiftOS.
+# GitHub Organization Stars Counter
 
-## Example use case
-If you wish to use this project as is, use this link to view the generated image for an organization passed as an argument:
->>> https://organization-stars.vercel.app/?org={organization_name}
+Welcome to the GitHub Org Star Counter, a tool that helps you show off the total star count for any GitHub organization. 
+
+## What's This All About? 
+
+This FastAPI-powered app generates a badge displaying the total star count across all repositories for any GitHub organization. It's perfect for READMEs, websites, or anywhere else you want to show this stat off.
+
+## Features 
+
+- Fetches star counts for all repos in a GitHub org
+- Generates a SVG badge with the total star count, using Google's PyBadges so that it looks uniform with all your other badges
+- Fast responses thanks to caching with TTLCache (we remember your star count for an hour)
+- Includes a JSON API 
+
+## How to Use It 
+
+Just use this URL format:
+
+>>> https://your-deployed-app-url/?org=YOUR_GITHUB_ORG_NAME
+
+For example, if your app is deployed at `https://organization-stars.vercel.app` and you want to show stars for the "ShapeShiftOS" organization, you'd use:
+
+>>> https://organization-stars.vercel.app/?org=ShapeShiftOS
+
+Stick that in an image tag, and you've got yourself a shiny star count badge! Here's an example use case:
 
    <br>
     <img height="22.5em" src="https://organization-stars.vercel.app/?org=ShapeShiftOS" />
    </br>
+
+## API
+
+If you're more into raw data, hit up the `/api/stars` endpoint:
+
+>>> https://your-deployed-app-url/api/stars?org=YOUR_GITHUB_ORG_NAME
+
+## Deploy Your Own 
+Note: You can use this project as is with the organization-stars.vercel.app domain. Be warned that you may run into rate limits as I'm using the public GitHub API with no authentication.
+
+1. Clone this repo
+2. Make sure you have Python 3.7+ installed
+3. Install the requirements: `pip install -r requirements.txt`
+4. Run it locally: `uvicorn main:app --reload`
+5. Deploy to your favorite platform (Vercel recommended)
+
