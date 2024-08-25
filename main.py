@@ -1,47 +1,58 @@
-from flask import Flask, request, make_response
+from fastapi import FastAPI, HTTPException, Query
+from fastapi.responses import Response
 from github import Github
-import svgwrite
-import requests
+import aiohttp
+import asyncio
+from cachetools import TTLCache
 import pybadges
 
-app = Flask(__name__)
+app = FastAPI()
 
-def get_total_stars(org_name):
-    # Create a GitHub instance
-    g = Github()
+# Initialize cache with a 1-hour TTL and max size of 1000 items
+cache = TTLCache(maxsize=1000, ttl=3600)
 
-    # Get the organization from the link
-    org = g.get_organization(org_name)
+async def fetch_repo_stars(session, repo_name):
+    url = f"https://api.github.com/repos/{repo_name}"
+    async with session.get(url) as response:
+        if response.status == 200:
+            data = await response.json()
+            return data.get("stargazers_count", 0)
+        return 0
 
-    # Initialize the total number of stars to zero
-    total_stars = 0
+async def get_total_stars(org_name):
+    if org_name in cache:
+        return cache[org_name]
 
-    # Loop through all repositories in the organization
-    for repo in org.get_repos():
-        # Add the number of stars for the repository to the total number of stars
-        total_stars += repo.stargazers_count
+    async with aiohttp.ClientSession() as session:
+        # First, fetch the list of repositories
+        url = f"https://api.github.com/orgs/{org_name}/repos?per_page=100"
+        repos = []
+        while url:
+            async with session.get(url) as response:
+                if response.status != 200:
+                    raise HTTPException(status_code=404, detail=f"Organization not found or API rate limit exceeded")
+                repos.extend(await response.json())
+                url = response.links.get('next', {}).get('url')
+
+        # Then, fetch star counts for each repository
+        tasks = [fetch_repo_stars(session, repo['full_name']) for repo in repos]
+        results = await asyncio.gather(*tasks)
+
+    total_stars = sum(results)
+    cache[org_name] = total_stars
     return total_stars
-        
-@app.route("/")
-def generate_svg():
-    org_name = request.args.get("org")
-    if not org_name:
-        return svgwrite.Drawing(size=(0, 0)).tostring()
-    
-    # Get the total number of stars for the given organization
+
+@app.get("/", response_class=Response)
+async def generate_svg(org: str = Query(..., description="GitHub organization name")):
     try:
-        total_stars = get_total_stars(org_name)
-    except ValueError as e:
-        return svgwrite.Drawing(size=(0, 0)).tostring()
-        
-    badge = pybadges.badge(left_text='stars', right_text=str(total_stars), right_color='green')
-
-    # Create an HTTP response with the SVG content type
-    response = make_response(badge)
-    response.headers["Content-Type"] = "image/svg+xml"
-    response.headers["Content-Disposition"] = "inline"
-
-    return response
+        total_stars = await get_total_stars(org)
+        badge = pybadges.badge(left_text='stars', right_text=str(total_stars), right_color='green')
+        return Response(content=badge, media_type="image/svg+xml")
+    except HTTPException as e:
+        # Return an error badge if there's an issue
+        error_badge = pybadges.badge(left_text='stars', right_text='error', right_color='red')
+        return Response(content=error_badge, media_type="image/svg+xml")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
