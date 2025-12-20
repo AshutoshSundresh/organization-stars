@@ -3,3 +3,5 @@ uvicorn
 PyGithub
 pybadges
 cachetools
+setuptools
+httpx

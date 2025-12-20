@@ -36,11 +36,13 @@ If you're more into raw data, hit up the `/api/stars` endpoint:
 ` https://your-deployed-app-url/api/stars?org=YOUR_GITHUB_ORG_NAME`
 
 ## Deploy Your Own 
-Note: You can use this project as is with the organization-stars.vercel.app domain. Be warned that you may run into rate limits as I'm using the public GitHub API with no authentication.
 
 1. Clone this repo
 2. Make sure you have Python 3.7+ installed
 3. Install the requirements: `pip install -r requirements.txt`
-4. Run it locally: `uvicorn main:app --reload`
-5. Deploy to your favorite platform (Vercel recommended)
+4. (Optional but recommended) Set a `GITHUB_TOKEN` environment variable with a GitHub personal access token to avoid rate limits and improve performance
+5. Run it locally: `uvicorn main:app --reload`
+6. Deploy to your favorite platform (Vercel recommended)
+
+**Note:** Without a GitHub token, you'll be limited to 60 requests/hour. With a token, you get 5,000 requests/hour, which significantly improves performance and prevents timeouts.
 
