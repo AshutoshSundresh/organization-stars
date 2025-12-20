@@ -5,3 +5,5 @@ pybadges
 cachetools
 setuptools
 httpx
+pytest
+pytest-asyncio

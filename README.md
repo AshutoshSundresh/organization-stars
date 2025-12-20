@@ -1,48 +1,34 @@
-# GitHub Organization Stars Counter
+# Organization Stars
 
-Welcome to the GitHub Org Star Counter, a tool that helps you show off the total star count for any GitHub organization. 
+FastAPI service that generates SVG badges showing total star counts for GitHub organizations.
 
-## What's This All About? 
+## Highlights
 
-This FastAPI-powered app generates a badge displaying the total star count across all repositories for any GitHub organization. It's perfect for READMEs, websites, or anywhere else you want to show this stat off.
+- Fetches star counts across all repos in a GitHub organization
+- Generates SVG badges using PyBadges (compatible with shields.io style)
+- Fast responses with 1-hour caching (TTLCache)
+- GraphQL API for efficient fetching (100 repos per query)
+- Automatic REST API fallback if GraphQL fails
+- JSON API endpoint for programmatic access
 
-## Features 
+## Architecture
 
-- Fetches star counts for all repos in a GitHub org
-- Generates a SVG badge with the total star count, using Google's PyBadges so that it looks uniform with all your other badges
-- Fast responses thanks to caching with TTLCache (we remember your star count for an hour)
-- Includes a JSON API 
+- **API**: FastAPI with async/await and thread pool execution
+- **GitHub API**: GraphQL primary, REST fallback via PyGithub
+- **Caching**: TTLCache (1 hour TTL, 1000 item max)
+- **Performance**: Async execution with 10s timeout, supports GitHub token for higher rate limits
 
-## How to Use It 
+## Tech Stack
 
-Just use this URL format:
+- FastAPI, Uvicorn
+- PyGithub, httpx (GraphQL)
+- PyBadges, cachetools
 
-` https://your-deployed-app-url/?org=YOUR_GITHUB_ORG_NAME `
+## Local Development
 
-For example, if your app is deployed at `https://organization-stars.vercel.app` and you want to show stars for the "ShapeShiftOS" organization, you'd use:
+1. Install deps: `pip install -r requirements.txt`
+2. (Optional) Set `GITHUB_TOKEN` env var for higher rate limits
+3. Run: `uvicorn main:app --reload`
+4. Test: `pytest`
 
-` https://organization-stars.vercel.app/?org=ShapeShiftOS `
-
-Stick that in an image tag, and you've got yourself a shiny star count badge! Here's an example use case:
-
-   <br>
-    <img height="22.5em" src="https://organization-stars.vercel.app/?org=ShapeShiftOS" />
-   </br>
-
-## API
-
-If you're more into raw data, hit up the `/api/stars` endpoint:
-
-` https://your-deployed-app-url/api/stars?org=YOUR_GITHUB_ORG_NAME`
-
-## Deploy Your Own 
-
-1. Clone this repo
-2. Make sure you have Python 3.7+ installed
-3. Install the requirements: `pip install -r requirements.txt`
-4. (Optional but recommended) Set a `GITHUB_TOKEN` environment variable with a GitHub personal access token to avoid rate limits and improve performance
-5. Run it locally: `uvicorn main:app --reload`
-6. Deploy to your favorite platform (Vercel recommended)
-
-**Note:** Without a GitHub token, you'll be limited to 60 requests/hour. With a token, you get 5,000 requests/hour, which significantly improves performance and prevents timeouts.
-
+**Note**: Without a GitHub token, you're limited to 60 requests/hour. With a token, you get 5,000 requests/hour.
